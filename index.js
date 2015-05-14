@@ -5,15 +5,17 @@ var express = require("express"),
     _ = require("underscore"),
     bodyParser = require("body-parser");
 
-    app.get("/", function(req, res) {
-    	res.send("Hello world");
-    });
+    //app.get("/", function(req, res) {
+    //	res.send("Hello world");
+    //});
+
+	app.use(express.static(__dirname + '/views'));
 
     app.listen(3000, function(req, res) {
     	console.log("server working a-okay");
     });
 
-    // data
+    // DATA
     var catchphrases =[
 	  {id: 0, word: "bootstrap", definition: "awesome css framework"},
 	  {id: 1, word: "foo", definition: "silly programming variable"},
@@ -21,3 +23,23 @@ var express = require("express"),
 	  {id: 3, word: "AJAX", definition: "Asynchronous Javascript And XHTML"},
 	  {id: 4, word: "DOM", definition: "Document Object Model"}
 	];
+
+	// ROUTES //
+
+// root path
+app.get("/", function (req, res){
+  // render index.html
+  res.sendFile(path.join(__dirname + '/views/phrases.html'));
+});
+
+// catchphrases index path
+app.get("/catchphrases", function (req, res){
+  // render catchphrases index as JSON
+  res.send(JSON.stringify(catchphrases));
+});
+
+
+
+
+
+

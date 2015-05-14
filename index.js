@@ -9,7 +9,7 @@ var express = require("express"),
     //	res.send("Hello world");
     //});
 
-	app.use(express.static(__dirname + '/views'));
+	app.use(express.static(__dirname + '/public'));
 
     app.listen(3000, function(req, res) {
     	console.log("server working a-okay");
@@ -29,7 +29,7 @@ var express = require("express"),
 // root path
 app.get("/", function (req, res){
   // render index.html
-  res.sendFile(path.join(__dirname + '/views/phrases.html'));
+  res.sendFile(path.join(__dirname + '/public/views/phrases.html'));
 });
 
 // catchphrases index path

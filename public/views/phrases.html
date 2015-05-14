@@ -12,18 +12,24 @@
 	<!-- Bootstrap -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script src="js/app.js"></script>
 </head>
 <body>
-	<div id="container">
+	
+	<div id="container col-md-12">
+		<header class="alert-success well"><h1>Get Caught Up on Your Catch-Phrases!</h1></header>
+		<ul class="list-group" id="phrase-ul">
+
+		</ul>
 
 	</div>
 
 </body>
   <!-- Underscore template -->
-  <script type="text/template" id="foods-template">
+  <script type="text/template" id="phrase-template">
     <% _.each(collection, function(item){ %>
-      <li class='list-group-item'><%= item.name %>
-        <span class="label label-default"><%= item.yumminess%></span>
+      <li class='list-group-item'><%= item.word %>
+        <span class="label label-default"><%= item.definition %></span>
       </li>
     <% }); %>
   </script>

@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 	<script src="js/app.js"></script>
+	<link href="css/style.css" rel="stylesheet">
 </head>
 <body>
 	
@@ -21,6 +22,17 @@
 		<ul class="list-group" id="phrase-ul">
 
 		</ul>
+		<div class="row well">
+			<form id="phrase-form">
+				<div class="form-group">
+					<label for="input_phrase" placeholder="Enter CatchPhrase">Enter CatchPhrase</label>
+					<input type="text" class="form-control bottom-margin" name="word">
+					<label for="input_def" placeholder="Enter Definition">Enter Definition</label>
+					<input type="text" class="form-control" name="definition">
+					<button type="submit" class="btn btn-primary">Submit CatchPhrase</button>
+				</div>
+			</form>
+		</div>
 
 	</div>
 
@@ -28,8 +40,8 @@
   <!-- Underscore template -->
   <script type="text/template" id="phrase-template">
     <% _.each(collection, function(item){ %>
-      <li class='list-group-item'><%= item.word %>
-        <span class="label label-default"><%= item.definition %></span>
+      <li class='list-group-item'><strong><%= item.word %></strong>
+        <span><em><%= item.definition %></em></span>
       </li>
     <% }); %>
   </script>

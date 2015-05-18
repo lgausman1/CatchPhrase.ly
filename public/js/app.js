@@ -1,55 +1,57 @@
 // on page load
 $(function(){
-  // get and render the phrases
-  Phrase.all();
-  // set the view's behavior
-  View.init();
-});
 
-// // // // // // //
+  var $newPhrase = $("#phrase-form"); // reference form
+  var $phraseCon = $("phrase-ul"); // phrase container
+  var phraseTemp = _.template($("#phrase-template").html());
+  var phrases = [];
 
-// VIEW OBJECT
-function View() {};
+  $.get("/catchphrases").
+    done(function (phrases) {
+    console.log(phrases); // ok returns array of objects
+      _(phrases).each(function (phrase) { 
+       console.log(phrase); // ok
+        var $fraze = $(phraseTemp(phrase));
+        $fraze.data("_id", fraze._id); // underscore in quotes?
+        console.log($fraze.data()); // not logging to console
+        $phraseCon.append($fraze);
+      }); // end of each
+    }); // end of done
 
-View.init = function() {
-  // catchphrase form submit event listener
-  $('#phrase-form').on('submit', function(e) {
-    e.preventDefault();
-    // format form data into a query string
-    var phraseParams = $(this).serialize();
-    Phrase.create(phraseParams);
-    console.log(phraseParams);
+// wait for #newPhrase submit
+$newPhrase.on("submit", function (e) {
+  e.preventDefault();
+  console.log("phrase submitted"); // ok
+  // turn form data into string
+  var phraseData = $newPhrase.serialize();
+
+  // POST form data
+  $.post("/catchphrases", phraseData).
+    done(function (data) {
+      console.log(data); // ok
+
+      // reset the form
+      $newPhrase[0].reset();
+      var $fraze = $(phraseTemp(data));
+      console.log($fraze); // not working
+
+      // add id to $fraze
+      $fraze.data("_id", data._id);
+      $phraseCon.append($fraze);
+    }); // end done
+
+  }); // end post
+
+  $newPhrase.on("click", ".list-group-item .close", function (e) {
+    var $fraze = $(this).closest(".list-group-item");
+    var frazeId = $fraze.data("_id");
+    console.log("DELETE", frazeId);
+    $.ajax({
+      url: "/catchphrases/" + frazeId,
+      type: "DELETE"
+      }).done(function () {
+        $fraze.remove();
+      });
   });
-};
 
-View.render = function(items, parentId, templateId) {
-  // render a template
-  var template = _.template($("#" + templateId).html());
-  // input data into template and append to parent
-  $("#" + parentId).html(template({collection: items}));
-};
-
-// phrase OBJECT
-function Phrase() {};
-Phrase.all = function() {
-  $.get("/catchphrases", function(res){ 
-    // parse the response
-    var phrases = JSON.parse(res);
-    // render the results
-    View.render(phrases, "phrase-ul", "phrase-template");
-  });
-};
-
-Phrase.create = function(phraseParams) {
-  $.post("/catchphrases", phraseParams).done(function(res) {
-    // once done, re-render all catchphrases
-    Phrase.all();
-  }).done(function(res) {
-      // reset form
-      $("#phrase-form")[0].reset();
-  });
-};
-
-
-
-
+}); // end on load

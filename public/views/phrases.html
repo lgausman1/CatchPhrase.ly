@@ -9,29 +9,36 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
 	<!-- Underscore -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+	<script src="js/app.js"></script>
 	<!-- Bootstrap -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-	<script src="js/app.js"></script>
+
 	<link href="css/style.css" rel="stylesheet">
 </head>
 <body>
 	
 	<div id="container col-md-12">
 		<header class="alert-success well"><h1>Get Caught Up on Your Catch-Phrases!</h1></header>
-		<ul class="list-group" id="phrase-ul">
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<ul class="list-group" id="phrase-ul">
 
-		</ul>
-		<div class="row well">
-			<form id="phrase-form">
-				<div class="form-group">
-					<label for="input_phrase" placeholder="Enter CatchPhrase">Enter CatchPhrase</label>
-					<input type="text" class="form-control bottom-margin" name="word">
-					<label for="input_def" placeholder="Enter Definition">Enter Definition</label>
-					<input type="text" class="form-control" name="definition">
-					<button type="submit" class="btn btn-primary">Submit CatchPhrase</button>
-				</div>
-			</form>
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="row well col-md-8 col-md-offset-2">
+				<form id="phrase-form">
+					<div class="form-group">
+						<label for="input_phrase" placeholder="Enter CatchPhrase">Enter CatchPhrase</label>
+						<input type="text" class="form-control bottom-margin" name="phrase[word]">
+						<label for="input_def" placeholder="Enter Definition">Enter Definition</label>
+						<input type="text" class="form-control" name="phrase[definition]">
+						<button type="submit" class="btn btn-primary top-margin">Submit CatchPhrase</button>
+					</div>
+				</form>
+			</div>
 		</div>
 
 	</div>
@@ -39,10 +46,13 @@
 </body>
   <!-- Underscore template -->
   <script type="text/template" id="phrase-template">
-    <% _.each(collection, function(item){ %>
-      <li class='list-group-item'><strong><%= item.word %></strong>
-        <span><em><%= item.definition %></em></span>
+    //<% _.each(collection, function(item){ %>
+      <div class="phrase">
+      <li class='list-group-item'><strong><%= word %></strong>
+        <span><em><%= definition %></em></span>
+        <button data-id="<%= _id %>" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </li>
-    <% }); %>
+      </div>
+    //<% }); %>
   </script>
 </html>

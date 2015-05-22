@@ -46,13 +46,21 @@
 </body>
   <!-- Underscore template -->
   <script type="text/template" id="phrase-template">
-    //<% _.each(collection, function(item){ %>
+
       <div class="phrase">
-      <li class='list-group-item'><strong><%= word %></strong>
-        <span><em><%= definition %></em></span>
-        <button data-id="<%= _id %>" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <li class='list-group-item'><strong><%= phrase.word %></strong>
+        <span><em><%= phrase.definition %></em></span>
+
+        <button data-id="<%= phrase._id %>" class="close" aria-label="Close"<span aria-hidden="true">&times;</span></button>
+        <div>
+
+        </div>
+
       </li>
       </div>
-    //<% }); %>
+    
   </script>
+  <!--<a id="toggler" data-toggle="collapse" class="active" data-target="#update-<%= phrase._id %>">
+        <span class="glyphicon glyphicon-pencil edit"></span>
+        </a>-->
 </html>

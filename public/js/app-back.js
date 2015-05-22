@@ -64,3 +64,51 @@ Phrase.delete = function(phrase) {
     } // end success
   }); // end ajax
 };  // end delete function
+
+
+Phrases.update = function (e, form) {
+  e.preventDefault();
+  var $form = $(form);
+  var phraseId = $form.data().phraseid;
+  var newWord = $form.find("input[name='word']").val();
+  var newDefinition = $form.find("input[name='definition']").val();
+
+  $.post("/update", {id: phraseId, word: newWord, definition: newDefinition }).
+  done(function (res) {
+    Phrase.all();
+  });
+};
+
+
+/////////////////////
+
+  $newPhrase.on("click", ".list-group-item button .close", function (e) {
+    e.preventDefault();
+    console.log("delete clicked");
+    var $fraze = $(this).closest(".list-group-item");
+    console.log($fraze);
+    var frazeId = $fraze.data("id");
+    console.log($frazeId);
+    console.log("DELETE", frazeId);
+    $.ajax({
+      url: "/catchphrases/" + frazeId,
+      type: "DELETE"
+      }).done(function () {
+        $fraze.remove();
+      });
+  });
+
+}); // end on load
+
+//////////////////////////////////////
+Phrases.delete = function(phrase) {
+  var phraseId = $(phrase).data().id;
+  $.ajax({
+    url: '/phrases/' + phraseId,
+    type: 'DELETE',
+    success: function(res) {
+      // once successfull, re-render all phrases
+      Phrases.all();
+    }
+  });
+};

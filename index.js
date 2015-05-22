@@ -12,6 +12,16 @@ var express = require("express"),
   // body parser config
   app.use(bodyParser.urlencoded({ extended: true }));
 
+
+// clear database
+function drop(Model) {
+  Model.remove({}, function (err) {
+    console.log("all Phrases documents removed");
+  });
+}
+
+
+
 	// ROUTES //
 
 // root path
@@ -22,8 +32,7 @@ app.get("/", function (req, res){
 
 // catchphrases index path
 app.get("/catchphrases", function (req, res){
-  // render catchphrases index as JSON
-  //res.send(JSON.stringify(catchphrases));
+
   db.cPhrase.find({},
   function(err, phrases) {
     res.send(phrases);
@@ -33,15 +42,8 @@ app.get("/catchphrases", function (req, res){
 
 
 app.post("/catchphrases", function (req, res) { 
-  // find new catchphrase in the req.body
-  //var newPhrase = req.body;
-  // get the last id in the array, increment by 1 and assign new id
-  //newPhrase.id = catchphrases[catchphrases.length -1].id + 1;
-  //add to the catchphrase array
-  //catchphrases.push(newPhrase);
-  // render the created object as json
-  //res.send(JSON.stringify(newPhrase));
-  //console.log("route is working");
+
+  // OLD
   db.cPhrase.create(req.body.phrase,
     function(err, phrase) {
       console.log(phrase);
@@ -49,20 +51,21 @@ app.post("/catchphrases", function (req, res) {
     });
 });
 
+app.post("/update", function (req, res){
+  db.Phrases.findById(req.body.id, function (err, phrase) {
+    if(err) {
+      res.status(500).send({ error: 'database save error'});
+    }
+    
+  })
+});
+
 
 app.delete("/catchphrases/:_id", function (req, res) {
-  // set the value of Id
-  //var targetId = req.params.id;
-  //find item in array matching Id
-  //var targetItem = _.findWhere(catchphrases, {id: targetId});
-  // get the index of found item
-  //var index = catchphrases.indexOf(targetItem);
-  // remove the item at that index only remove 1 item
-  //catchphrases.splice(index, 1);
-  // render deleted object
-  //res.send(JSON.stringify(targetItem));
-  db.cPhrase.findOneAndRemove({_id: req.params._id},
+  
+  db.cPhrase.findOneAndRemove({_id: req.params._id}, 
     function (err, phrase) {
+      console.log(req.params);
       res.send(204);
     });
 });

@@ -2,18 +2,15 @@
 $(function(){
 
   var $newPhrase = $("#phrase-form"); // reference form
-  var $phraseCon = $("phrase-ul"); // phrase container
+  var $phraseCon = $("#phrase-ul"); // phrase container
   var phraseTemp = _.template($("#phrase-template").html());
   var phrases = [];
 
   $.get("/catchphrases").
     done(function (phrases) {
-    console.log(phrases); // ok returns array of objects
       _(phrases).each(function (phrase) { 
-       console.log(phrase); // ok
-        var $fraze = $(phraseTemp(phrase));
-        $fraze.data("_id", fraze._id); // underscore in quotes?
-        console.log($fraze.data()); // not logging to console
+        var $fraze = $(phraseTemp({phrase: phrase})); // maps to template
+        $fraze.data("_id", $fraze._id); 
         $phraseCon.append($fraze);
       }); // end of each
     }); // end of done
@@ -28,11 +25,10 @@ $newPhrase.on("submit", function (e) {
   // POST form data
   $.post("/catchphrases", phraseData).
     done(function (data) {
-      console.log(data); // ok
 
       // reset the form
       $newPhrase[0].reset();
-      var $fraze = $(phraseTemp(data));
+      var $fraze = $(phraseTemp({phrase: data}));
       console.log($fraze); // not working
 
       // add id to $fraze
@@ -42,16 +38,18 @@ $newPhrase.on("submit", function (e) {
 
   }); // end post
 
-  $newPhrase.on("click", ".list-group-item .close", function (e) {
-    var $fraze = $(this).closest(".list-group-item");
-    var frazeId = $fraze.data("_id");
-    console.log("DELETE", frazeId);
-    $.ajax({
-      url: "/catchphrases/" + frazeId,
-      type: "DELETE"
-      }).done(function () {
-        $fraze.remove();
-      });
+  $("#phrase-ul").on("click", "button.close",  function (e) {
+        e.preventDefault();
+        var $fraze = $(this).closest(".list-group-item");
+        var frazeId = $(this).data("id");
+        $.ajax({
+          url: "/catchphrases/" + frazeId,
+          type: "DELETE"
+          }).done(function () {
+            $fraze.remove();
+          });
   });
+
+
 
 }); // end on load
